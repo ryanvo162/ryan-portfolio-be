@@ -1,6 +1,5 @@
 import express from 'express';
 // import mongoose from "mongoose";
-import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
@@ -9,8 +8,21 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [process.env.FRONT_END_URL || '', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    credentials: true,
+    allowedHeaders: [
+      'Content-Type',
+      'X-Requested-With',
+      'X-HTTP-Method-Override',
+      'Accept',
+      'Authorization',
+    ],
+  })
+);
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (_req, res) => {
   res.json({ message: 'Portfolio API' });
