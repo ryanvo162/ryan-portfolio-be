@@ -4,11 +4,12 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import projectRoutes from './routes/project';
+import adminRoutes from './routes/admin';
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 mongoose
   .connect(process.env.MONGO_URL || '')
@@ -23,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
   cors({
-    origin: [process.env.FRONT_END_URL || '', 'http://localhost:3000'],
+    origin: [process.env.FRONT_END_URL || '', 'http://localhost:3000', 'http://localhost:8080'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     credentials: true,
     allowedHeaders: [
@@ -40,6 +41,7 @@ app.get('/', (_req, res) => {
   res.json({ message: 'Portfolio API' });
 });
 
+app.use('/admin', adminRoutes);
 app.use('/projects', projectRoutes);
 
 app.listen(port, () => {
