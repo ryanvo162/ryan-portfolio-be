@@ -22,7 +22,6 @@ mongoose
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-console.log('process.env.FRONT_END_URL', process.env.FRONT_END_URL?.split(','));
 app.use(
   cors({
     origin: process.env.FRONT_END_URL?.split(',') || [],
